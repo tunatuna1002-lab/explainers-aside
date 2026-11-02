@@ -1,3 +1,5 @@
+> 글을 쓰거나 고치기 전에 [docs/DESIGN_FEEDBACK.md](docs/DESIGN_FEEDBACK.md)를 먼저 읽는다.
+
 # explainers-aside
 
 공부하며 질문한 내용을 Grok Bot이 만든 설명 Page(React/TSX, `grok/canvas` 키트)를 **같은 디자인 그대로** 정적 사이트 글로 옮겨 게시하는 개인 설명글 사이트입니다.
