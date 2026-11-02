@@ -1,0 +1,20 @@
+// @ts-check
+import { defineConfig } from "astro/config";
+import mdx from "@astrojs/mdx";
+import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
+import { unified } from "@astrojs/markdown-remark";
+import remarkMath from "remark-math";
+import rehypeKatex from "rehype-katex";
+
+export default defineConfig({
+  output: "static",
+  trailingSlash: "ignore",
+  integrations: [
+    react(),
+    mdx(),
+  ],
+  // $…$ / $$…$$ in Markdown and MDX prose is typeset by KaTeX at build time
+  markdown: { processor: unified({ remarkPlugins: [remarkMath], rehypePlugins: [rehypeKatex] }) },
+  vite: { plugins: [tailwindcss()] },
+});

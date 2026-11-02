@@ -1,0 +1,32 @@
+---
+import { getCollection } from "astro:content";
+import Base from "@/layouts/Base.astro";
+
+const posts = (await getCollection("posts", ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const fmt = (d: Date) => `${d.getUTCFullYear()}. ${d.getUTCMonth() + 1}. ${d.getUTCDate()}.`;
+---
+<Base title="설명글 · explainers" description="공부하며 질문한 내용을 그림과 예시로 풀어 쓴 설명글 모음">
+  <main class="mx-auto max-w-[700px] px-5 pt-16 pb-24 md:pt-24">
+    <header class="mb-12">
+      <p class="text-label font-semibold uppercase tracking-[0.14em] text-ink-2">explainers</p>
+      <h1 class="mt-2 text-h1 font-bold tracking-[-0.015em]">설명글</h1>
+      <p class="mt-3 text-body1 text-ink-2">공부하며 질문한 내용을 그림과 예시로 풀어 쓴 글을 모아 둡니다.</p>
+    </header>
+    <ol class="border-t border-line-weak">
+      {posts.map((p, i) => (
+        <li class="border-b border-line-weak">
+          <a href={`/posts/${p.id}/`} class="group grid grid-cols-[2rem_minmax(0,1fr)] gap-x-3 py-5 -mx-3 px-3 rounded-lg transition-colors hover:bg-hover">
+            <span class="text-subtext text-ink-3 tabular-nums pt-[3px]">{posts.length - i}</span>
+            <span>
+              <span class="block text-h3 font-semibold tracking-[-0.008em]">{p.data.title}</span>
+              <span class="mt-1 block text-subtext text-ink-2">{p.data.summary}</span>
+              <time class="mt-2 block text-label text-ink-3" datetime={p.data.date.toISOString().slice(0, 10)}>{fmt(p.data.date)}</time>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </main>
+</Base>

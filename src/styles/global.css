@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* Grok page tokens. Values come from src/components/canvas/tokens.ts, injected as --g-* in Base.astro. */
+@theme inline {
+  --color-paper: var(--g-bg);
+  --color-paper-subtle: var(--g-bg-subtle);
+  --color-ink: var(--g-ink);
+  --color-ink-2: var(--g-ink-2);
+  --color-ink-3: var(--g-ink-3);
+  --color-accent: var(--g-accent);
+  --color-wash: var(--g-fill-2);
+  --color-hover: var(--g-hover);
+  --color-line-subtle: var(--g-line-subtle);
+  --color-line-weak: var(--g-line-weak);
+  --color-line: var(--g-line);
+  --font-sans: var(--g-font);
+  --font-mono: var(--g-mono);
+  --text-h1: 30px;
+  --text-h1--line-height: 36px;
+  --text-h2: 24px;
+  --text-h2--line-height: 30px;
+  --text-h3: 20px;
+  --text-h3--line-height: 26px;
+  --text-body1: 16px;
+  --text-body1--line-height: 24px;
+  --text-subtext: 14px;
+  --text-subtext--line-height: 20px;
+  --text-label: 12px;
+  --text-label--line-height: 16px;
+  --radius-lg: 12px;
+}
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--g-bg); color: var(--g-ink); font-family: var(--g-font); }
+:lang(ko) { word-break: keep-all; overflow-wrap: break-word; }
+
+/* ---------- site chrome ---------- */
+.site-nav { padding: 20px 24px 0 40px; }
+@media (max-width: 1040px) { .site-nav { max-width: 700px; margin: 0 auto; padding: 16px 20px 0; } }
+
+/* ---------- Page: qlabs layout with Grok tokens ---------- */
+.g-page {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 700px);
+  grid-template-rows: auto 1fr;
+  column-gap: max(56px, calc((100vw - 1040px) / 2));
+  padding: 32px 24px 96px 40px;
+}
+.g-page[data-width="wide"] { grid-template-columns: 210px minmax(0, 1280px); column-gap: 56px; }
+.g-page[data-width="full"] { grid-template-columns: 210px minmax(0, 1fr); column-gap: 56px; }
+.g-header { grid-column: 2; grid-row: 1; }
+.g-outline { grid-column: 1; grid-row: 1 / span 2; position: sticky; top: 28px; align-self: start; max-height: calc(100vh - 56px); overflow-y: auto; padding-top: 6px; }
+.g-main { grid-column: 2; grid-row: 2; min-width: 0; }
+
+.g-tldr { margin: 24px 0 0; padding: 18px 22px 18px; scroll-margin-top: 24px; }
+.g-text { text-wrap: pretty; }
+
+.g-section { margin-top: 64px; scroll-margin-top: 24px; }
+.g-subsection { scroll-margin-top: 24px; }
+.g-section > .g-section-head { margin-bottom: 20px; }
+.g-subsection > .g-section-head { margin-bottom: 12px; }
+.g-cell-section > .g-section-head { margin-bottom: 12px; }
+
+/* block rhythm: paragraphs 16, lists 24, figures 32 */
+.g-text, .g-props, .g-steps, .g-equation { margin: 0; }
+.g-blocks > * + * { margin-top: 16px; }
+.g-blocks > [data-g="list"], .g-blocks > [data-g="list"] + * { margin-top: 24px; }
+.g-blocks > [data-g="figure"], .g-blocks > [data-g="figure"] + * { margin-top: 32px; }
+.g-blocks > .g-equation { margin: 16px 0; }
+.g-blocks > :first-child { margin-top: 0; }
+
+/* ---------- TableOfContents ---------- */
+.g-toc-link {
+  display: flex; gap: 8px; align-items: baseline;
+  padding-top: 5px; padding-bottom: 5px; padding-right: 8px;
+  border-left: 2px solid var(--g-line);
+  color: var(--g-ink-2); text-decoration: none;
+  font-size: 13px; line-height: 18px;
+  transition: color var(--g-motion), border-color var(--g-motion), background-color var(--g-motion);
+}
+.g-toc-num { color: var(--g-ink-3); font-variant-numeric: tabular-nums; min-width: 1em; }
+.g-toc-link:hover { color: var(--g-ink); background: var(--g-hover); }
+.g-toc-link[data-active] { color: var(--g-ink); font-weight: 500; border-left-color: var(--g-fill); }
+.g-toc-link[data-active] .g-toc-num { color: var(--g-ink); }
+
+/* ---------- narrow screens: one column, contents box on top ---------- */
+@media (max-width: 1040px) {
+  .g-page { display: block; max-width: 700px; margin: 0 auto; padding: 20px 20px 72px; }
+  .g-outline { position: static; max-height: none; overflow: visible; margin-top: 24px; padding: 14px 16px 10px; border: 1px solid var(--g-line); border-radius: 12px; }
+  .g-toc-link { border-left: 0; padding-left: 8px !important; border-radius: 8px; font-size: 14px; line-height: 20px; }
+  .g-toc-link[data-depth="1"] { padding-left: 24px !important; }
+  .g-toc-link[data-active] { background: var(--g-hover); }
+  .g-section { margin-top: 56px; }
+}
+
+/* ---------- Segmented (Base UI ToggleGroup) ---------- */
+.g-seg { display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 2px; max-width: 100%; }
+.g-seg-item {
+  appearance: none; border: 0; background: transparent; cursor: pointer;
+  min-width: 32px; height: 28px; padding: 0 12px;
+  color: var(--g-ink-2); font-family: inherit; font-weight: 500;
+  transition: background-color var(--g-motion), color var(--g-motion), box-shadow var(--g-motion);
+}
+.g-seg-item:hover { color: var(--g-ink); }
+.g-seg-item[data-pressed] { background: var(--g-bg); color: var(--g-ink); box-shadow: 0 1px 3px 0 #1c1c1c1f, 0 0 0 0.5px var(--g-line); }
+.g-seg-item:focus-visible { outline: 2px solid var(--g-focus); outline-offset: 1px; }
+
+/* ---------- Collapsible section ---------- */
+.g-collapse-trigger { all: unset; display: flex; align-items: center; gap: 8px; cursor: pointer; width: 100%; }
+
+/* ---------- scroll + math ---------- */
+.g-scroll { scrollbar-width: thin; }
+.g-equation .katex-display { margin: 0; overflow-x: auto; overflow-y: hidden; padding: 4px 0; }
+.g-equation .katex { font-size: 1.15em; }
+@media (prefers-reduced-motion: reduce) { .g-toc-link, .g-seg-item { transition: none; } }
