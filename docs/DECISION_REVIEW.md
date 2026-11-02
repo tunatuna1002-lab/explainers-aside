@@ -54,4 +54,22 @@
 
 ## 5. 배포
 
-(아래에 이어서 기록)
+| 명령 | 결과 |
+|-|-|
+| `git init -b main`, `git add -A`, `git commit` | `dist/`, `node_modules/`, `.astro/`, `.vercel/`, `.env*` 는 `.gitignore`. `explainers-ref` 자료는 저장소 밖이라 커밋되지 않음 |
+| `gh repo create tunatuna1002-lab/explainers-aside --public --source=. --remote=origin --push` | https://github.com/tunatuna1002-lab/explainers-aside (동원 승인) |
+| `vercel deploy --prod --yes` | 새 프로젝트 `explainers-aside` 생성, Vercel에서 `npm install` + `astro build` 성공, Ready 17s. 별칭 https://explainers-aside.vercel.app (동원 승인). CLI가 `.gitignore` 에 `.vercel` 한 줄 추가 |
+| `curl -s -o … -w "%{http_code}" https://explainers-aside.vercel.app/` 와 `/posts/llm/` | 둘 다 200, `<html lang="ko">`, 글 페이지에 KaTeX 출력 포함 |
+
+## 6. 원본 Page와 다른 점 (남은 한계)
+
+- 원본 키트 소스가 없어 `.d.ts` 설명과 Grok Bot 앱 토큰으로 다시 만든 것이라 픽셀 단위로 같지 않습니다. 특히 Diagram 노드 크기는 글자 폭 추정으로 계산합니다(원본은 실제 측정).
+- 노랑·청록 데이터 색은 앱 dataviz에서 고른 값이며, 키트 고유 값과 다를 수 있습니다(이 글에서는 TokenChips 밑줄 2개에만 쓰임).
+- 밝은 모드만 지원합니다.
+- 수식은 KaTeX 글꼴(세리프)로 나옵니다. 원본은 본문 글꼴로 항을 배치합니다.
+- 글 전체가 하나의 island 라 React(약 190KB gzip 전)를 내려받습니다.
+- 브랜드 글꼴 XVF 대신 시스템 글꼴.
+
+## 7. 시간
+
+- 시작 13:56, 배포 확인 14:18 (KST) → 약 22분.
