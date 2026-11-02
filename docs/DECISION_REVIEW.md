@@ -50,6 +50,8 @@
 | `Segmented` 5 클릭 | Properties 가 "5. FFN과 층 반복" 으로 바뀜(hydration 정상) |
 | 스크린샷 | `explainers-ref/aside-run/desktop.png`(1440 전체), `mobile.png`(390 전체), `home.png`. 브라우저 확장(Moonlight) 위젯은 촬영 때만 숨김. 촬영 후 서버 종료 |
 
+| `npx tsc --noEmit -p .` | TS 7이 `baseUrl` 을 없앴다는 오류 → `paths: {"@/*": ["./src/*"]}` 로 고침. 원본 글 포함 타입 검사 통과(exit 0) |
+
 ## 5. 배포
 
 (아래에 이어서 기록)
